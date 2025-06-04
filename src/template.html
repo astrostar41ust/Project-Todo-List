@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShineProdigy Todo List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>ShineProdigy</h1>
+                <p>Todo List</p>
+            </div>
+
+            <nav class="main-nav">
+                <button id="today-btn" class="nav-button active">
+                    <span class="icon">📅</span>
+                    Today
+                </button>
+                <button id="this-week-btn" class="nav-button">
+                    <span class="icon">📆</span>
+                    This Week
+                </button>
+                <button id="this-month-btn" class="nav-button">
+                    <span class="icon">📊</span>
+                    This Month
+                </button>
+            </nav>
+
+            <div class="projects-section">
+                <div class="section-header">
+                    <h2>Projects</h2>
+                    <button id="add-project-btn" class="icon-button" title="Add Project">+</button>
+                </div>
+                <div id="projects-list">
+                    <template id="project-item-template">
+                        <div class="project-item">
+                            <span class="project-title"></span>
+                            <button class="project-delete-btn" title="Delete Project">×</button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h2 id="current-view-title">Today's Tasks</h2>
+                    <p id="current-date"></p>
+                </div>
+                <button id="add-todo-btn" class="primary-button">
+                    Add Todo
+                </button>
+            </header>
+
+            <div id="todos-container" class="todos-container">
+                <!-- Todos will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Project Dialog -->
+    <dialog id="add-project-dialog" class="modal">
+        <form id="add-project-form" class="modal-form">
+            <div class="modal-header">
+                <h3>Add New Project</h3>
+                <button type="button" id="close-project-modal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="project-title">Project Title</label>
+                    <input type="text" id="project-title" name="title" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-project" class="secondary-button">Cancel</button>
+                <button type="submit" class="primary-button">Create Project</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Add Todo Dialog -->
+    <dialog id="add-todo-dialog" class="modal">
+        <form id="add-todo-form" class="modal-form">
+            <div class="modal-header">
+                <h3>Add New Todo</h3>
+                <button type="button" id="close-todo-modal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="todo-title">Title</label>
+                    <input type="text" id="todo-title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="todo-description">Description</label>
+                    <textarea id="todo-description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="todo-project">Project</label>
+                    <select id="todo-project" name="project" required>
+                        <option value="" disabled selected>Select a project</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="todo-priority">Priority</label>
+                    <select id="todo-priority" name="priority" required>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="todo-due-date">Due Date</label>
+                    <input type="date" id="todo-due-date" name="due-date" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-todo" class="secondary-button">Cancel</button>
+                <button type="submit" class="primary-button">Create Todo</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- View Todo Details Dialog -->
+    <dialog id="view-todo-dialog" class="modal">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3>Todo Details</h3>
+                <button type="button" id="close-todo-details" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="todo-detail-item">
+                    <label>Title</label>
+                    <p id="detail-title"></p>
+                </div>
+                <div class="todo-detail-item">
+                    <label>Description</label>
+                    <p id="detail-description"></p>
+                </div>
+                <div class="todo-detail-item">
+                    <label>Project</label>
+                    <p id="detail-project"></p>
+                </div>
+                <div class="todo-detail-item">
+                    <label>Priority</label>
+                    <p id="detail-priority"></p>
+                </div>
+                <div class="todo-detail-item">
+                    <label>Due Date</label>
+                    <p id="detail-due-date"></p>
+                </div>
+                <div class="todo-detail-item">
+                    <label>Status</label>
+                    <p id="detail-status"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close-details" class="primary-button">Close</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Delete Confirmation Dialog -->
+    <dialog id="delete-confirm-dialog" class="modal delete-modal">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3>Delete Confirmation</h3>
+                <button type="button" id="close-delete-modal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-delete" class="secondary-button">Cancel</button>
+                <button type="button" id="confirm-delete" class="delete-button">Delete</button>
+            </div>
+        </div>
+    </dialog>
+</body>
+
+</html>
