@@ -19,11 +19,4 @@ export default class Storage {
         }
     }
 
-    static clearStorage() {
-        try {
-            localStorage.removeItem(this.STORAGE_KEY);
-        } catch (error) {
-            console.error('Error clearing localStorage:', error);
-        }
-    }
 } 

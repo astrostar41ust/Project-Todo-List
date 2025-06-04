@@ -14,13 +14,6 @@ export default class Todo {
         this.completed = !this.completed;
     }
 
-    update(data) {
-        if (data.title) this.title = data.title;
-        if (data.description !== undefined) this.description = data.description;
-        if (data.priority) this.priority = data.priority;
-        if (data.dueDate) this.dueDate = data.dueDate;
-        if (data.completed !== undefined) this.completed = data.completed;
-    }
 
     toJSON() {
         return {

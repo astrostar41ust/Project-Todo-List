@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -11,15 +9,22 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/template.html',
+            filename: 'index.html',
+            minify: {
+                removeAttributeQuotes: true,
+                collapseWhitespace: true,
+                removeComments: true
+            }
+        }),
+    ],
     module: {
         rules: [
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            },
-            {
-                test: /\.html$/i,
-                loader: "html-loader",
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -31,25 +36,8 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/template.html',
-            title: 'ShineProdigy Todo List',
-            minify: {
-                removeAttributeQuotes: true,
-                collapseWhitespace: true,
-                removeComments: true
-            }
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css'
-        })
-    ],
     optimization: {
-        minimizer: [
-            `...`,
-            new CssMinimizerPlugin(),
-        ],
+        moduleIds: 'deterministic',
         runtimeChunk: 'single',
         splitChunks: {
             cacheGroups: {
@@ -60,9 +48,5 @@ module.exports = {
                 },
             },
         },
-    },
-    devtool: "eval-source-map",
-    devServer: {
-        watchFiles: ["./src/index.html"],
     },
 };
