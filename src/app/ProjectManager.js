@@ -407,14 +407,11 @@ export default class ProjectManager {
     }
 
     confirmDeleteTodo(todoId) {
-        for (const project of this.projects) {
-            const todo = project.getTodo(todoId);
-            if (todo) {
-                project.removeTodo(todoId);
-                this.saveProjects();
-                this.renderTodos(project.id);
-                break;
-            }
+        const project = this.projects.find(p => p.todos.some(t => t.id === todoId));
+        if (project) {
+            project.removeTodo(todoId);
+            this.saveProjects();
+            this.renderTodos(project.id);
         }
     }
 

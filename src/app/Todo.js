@@ -7,13 +7,12 @@ export default class Todo {
         this.priority = priority;
         this.dueDate = dueDate;
         this.completed = false;
-        this.createdAt = new Date().toISOString();
+        this.createdAt = new Date();
     }
 
     toggleComplete() {
         this.completed = !this.completed;
     }
-
 
     toJSON() {
         return {
@@ -24,7 +23,7 @@ export default class Todo {
             priority: this.priority,
             dueDate: this.dueDate,
             completed: this.completed,
-            createdAt: this.createdAt
+            createdAt: this.createdAt.toISOString()
         };
     }
 } 
